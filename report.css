@@ -1,0 +1,113 @@
+body {
+    padding: 0 20px;
+}
+
+@media all and (max-width: 767px) {
+    body {
+        padding: 0 5px;
+    }
+}
+
+.feature {
+    position: relative;
+}
+
+.feature .uri {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+
+.scenarios {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between; 
+    align-items: flex-start;   
+}
+
+.scenario {
+    flex-grow: 1;
+}
+
+.scenario.expanded:nth-child(odd) {
+    background-color: #fff;
+}
+
+.scenario.expanded:nth-child(even) {
+    background-color: lightgrey;
+}
+
+.scenario.expanded {
+    flex-grow: 100;
+}
+
+.scenario.passed .heading {
+    background-color: green;
+    opacity: 0.8;
+    height: 30px;
+}
+
+.scenario.failed .heading {
+    background-color: red;
+    opacity: 0.8;
+}
+
+.scenario .heading:hover
+{
+    cursor: pointer;
+}
+
+.scenario.passed .heading:hover
+{
+    opacity: 1.0;
+}
+
+.scenario.failed .heading:hover
+{
+    opacity: 1.0;
+}
+
+.scenario-contents {
+    position: relative;
+    padding: 0 10px;
+}
+
+.toggle-steps {
+    display: block;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+
+.toggle-steps:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: green;
+}
+
+/* Captures */
+.captures img {
+    width: 50px;
+    display: inline-block;
+    border: lightgrey 3px solid;
+}
+
+.captures img:hover {
+    border: white 3px solid;
+    cursor: pointer
+}
+
+#colorbox {
+    z-index: 10;
+}
+
+#cboxOverlay {
+    width: 120%;
+    height: 120%;
+    top: -10%;
+    left: -10%;
+    z-index: 9;
+}
