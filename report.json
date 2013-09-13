@@ -376,4 +376,137 @@
     "line" : 1,
     "name" : "Login the user",
     "uri" : "features/iphone/0 - login.feature"
-  } ]
+  },
+  {
+  "keyword": "Feature",
+  "name": "Logout the user 2",
+  "line": 1,
+  "description": "",
+  "id": "logout-the-user-2",
+  "uri": "features/iphone/99 - logout.feature",
+  "elements": [{
+    "keyword": "Scenario",
+    "name": "Logout the user 2",
+    "line": 3,
+    "description": "",
+    "id": "logout-the-user;logout-the-user",
+    "type": "scenario",
+    "steps": [{
+      "keyword": "Given ",
+      "name": "I am on the Home Screen",
+      "line": 4,
+      "match": {
+        "location": "features/iphone/step_definitions/turf_steps.rb:1"
+      },
+      "result": {
+        "status": "failed",
+        "error_message": "Connection refused - connect(2) (http://localhost:37265) (Errno::ECONNREFUSED)\n/Users/civetta/.rvm/rubies/ruby-2.0.0-p0/lib/ruby/2.0.0/timeout.rb:65:in `timeout'\n/Users/civetta/.rvm/rubies/ruby-2.0.0-p0/lib/ruby/2.0.0/timeout.rb:96:in `timeout'\n./features/iphone/step_definitions/turf_steps.rb:2:in `/^I am on the Home Screen$/'\nfeatures/iphone/99 - logout.feature:4:in `Given I am on the Home Screen'",
+        "duration": 4489000
+      }
+    }, {
+      "keyword": "Then ",
+      "name": "I touch the menu button",
+      "line": 5,
+      "match": {
+        "location": "features/iphone/step_definitions/turf_steps.rb:15"
+      },
+      "result": {
+        "status": "skipped",
+        "duration": 404000
+      }
+    }, {
+      "keyword": "Then ",
+      "name": "I wait until I see a view marked \"logoutButton\"",
+      "line": 6,
+      "match": {
+        "arguments": [{
+          "offset": 34,
+          "val": "logoutButton"
+        }],
+        "location": "features/iphone/step_definitions/turf_steps.rb:64"
+      },
+      "result": {
+        "status": "skipped",
+        "duration": 409000
+      }
+    }, {
+      "keyword": "Then ",
+      "name": "I touch \"logoutButton\"",
+      "line": 7,
+      "match": {
+        "arguments": [{
+          "offset": 9,
+          "val": "logoutButton"
+        }],
+        "location": "calabash-cucumber-0.9.135/features/step_definitions/calabash_steps.rb:15"
+      },
+      "result": {
+        "status": "skipped",
+        "duration": 404000
+      }
+    }, {
+      "keyword": "Then ",
+      "name": "I wait until I read \"SE CONNECTER\"",
+      "line": 8,
+      "match": {
+        "arguments": [{
+          "offset": 21,
+          "val": "SE CONNECTER"
+        }],
+        "location": "features/iphone/step_definitions/turf_steps.rb:20"
+      },
+      "result": {
+        "status": "skipped",
+        "duration": 319000
+      }
+    }, {
+      "keyword": "Then ",
+      "name": "I wait",
+      "line": 9,
+      "match": {
+        "location": "calabash-cucumber-0.9.135/features/step_definitions/calabash_steps.rb:174"
+      },
+      "result": {
+        "status": "skipped",
+        "duration": 304000
+      }
+    }, {
+      "keyword": "Then ",
+      "name": "I touch the menu button",
+      "line": 10,
+      "match": {
+        "location": "features/iphone/step_definitions/turf_steps.rb:15"
+      },
+      "result": {
+        "status": "skipped",
+        "duration": 200000
+      }
+    }, {
+      "keyword": "Then ",
+      "name": "I wait until I read \"Les courses du jour\"",
+      "line": 11,
+      "match": {
+        "arguments": [{
+          "offset": 21,
+          "val": "Les courses du jour"
+        }],
+        "location": "features/iphone/step_definitions/turf_steps.rb:20"
+      },
+      "result": {
+        "status": "skipped",
+        "duration": 325000
+      }
+    }, {
+      "keyword": "And ",
+      "name": "take picture",
+      "line": 13,
+      "match": {
+        "location": "calabash-cucumber-0.9.135/features/step_definitions/calabash_steps.rb:197"
+      },
+      "result": {
+        "status": "skipped",
+        "duration": 348000
+      }
+    }]
+  }]
+}]

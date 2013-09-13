@@ -88,6 +88,11 @@ var report = {
                             '<span class="location">' + self.features[i].scenarios[j].steps[k].match.location + '</span>' + 
                         '</div>');
                     $step.addClass(self.features[i].scenarios[j].steps[k].result.status == "passed" ? "passed" : "failed");
+                    
+                    // Add error
+                    if (self.features[i].scenarios[j].steps[k].result.status == "failed") {
+                        $step.append('<div class="error-message">' + self.features[i].scenarios[j].steps[k].result.error_message + '</div>');
+                    }
                     $steps.append($step);
 
                     if (typeof(self.features[i].scenarios[j].steps[k].embeddings) != "undefined") {
@@ -178,13 +183,13 @@ var Report = {
 
         this.isPassed = function() {
             if (typeof(self._passed) == "undefined") {
+                self._passed = true;
                 for (var i = 0; i < self.steps.length; i++) {
                     if (!self.scenarios[i].isPassed()) {
                         self._passed = false;
                         break;
                     }
-                }
-                self._passed = true;
+                }                
             }
             return self._passed;
         }
@@ -209,13 +214,13 @@ var Report = {
 
         this.isPassed = function() {
             if (typeof(self._passed) == "undefined") {
+                self._passed = true;
                 for (var i = 0; i < self.steps.length; i++) {
                     if (self.steps[i].result.status != "passed") {
                         self._passed = false;
                         break;
                     }
-                }
-                self._passed = true;
+                }                
             }
             return self._passed;
         }
