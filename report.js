@@ -34,7 +34,8 @@ var report = {
             $target.append($feature);
 
             // Add duration
-            $feature.append('<span class="duration">' + moment.duration(self.features[i].getDuration() / 1000000).humanize() + '</span>'); 
+            var daysSinceLastWorkplaceAccident = countdown(0, self.features[i].getDuration() / 1000000, null, countdown.DEFAULTS);
+            $feature.append('<span class="duration">' + daysSinceLastWorkplaceAccident.toString() + '</span>'); 
 
             var $scenarios = $('<div class="scenarios"></div>'); 
             $feature.append($scenarios);

@@ -19,6 +19,14 @@ body {
     right: 0;
 }
 
+.feature .duration {
+    display: block;
+    position: absolute;
+    top: 28px;
+    left: 0px;
+    font-size: 10px;
+}
+
 .scenarios {
     display: flex;
     flex-direction: row;
