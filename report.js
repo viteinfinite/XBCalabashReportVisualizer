@@ -33,6 +33,9 @@ var report = {
             var $feature = $('<div class="feature"><h2>' + self.features[i].name + '</h2><span class="uri">' + self.features[i].uri + '</span></div>');
             $target.append($feature);
 
+            // Add duration
+            $feature.append('<span class="duration">' + moment.duration(self.features[i].getDuration() / 1000000).humanize() + '</span>'); 
+
             var $scenarios = $('<div class="scenarios"></div>'); 
             $feature.append($scenarios);
 
@@ -229,7 +232,7 @@ var Report = {
             if (typeof(self._duration) == "undefined") {
                 self._duration = 0;
                 for (var i = 0; i < self.steps.length; i++) {
-                    self._duration += self.steps[i].result._duration;
+                    self._duration += self.steps[i].result.duration;
                 }
             }
             return self._duration;
