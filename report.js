@@ -1,9 +1,6 @@
 $(function() {
     report.getFeatures(function() {
-
         report.drawFeaturesIn($("body"));
-
-        //report.postProcessFeatures();
     });     
 
     $(function() {
@@ -20,7 +17,7 @@ var report = {
         $.getJSON('report.json', function(data) {
             $.each(data, function(key, value) {
                 console.log(value);
-                self.features.push(new Report.Feature(value.name, value.uri, value.elements));
+                self.features.push(new Report.Feature(value.id, value.name, value.uri, value.elements));
             });
             console.log(self.features);
             callback();
@@ -30,6 +27,8 @@ var report = {
     drawFeaturesIn: function($target) {
         var self = this;
         for (var i = 0; i < self.features.length; i++) {
+
+            var hasCaptures = false;
 
             var $feature = $('<div class="feature"><h2>' + self.features[i].name + '</h2><span class="uri">' + self.features[i].uri + '</span></div>');
             $target.append($feature);
@@ -72,16 +71,16 @@ var report = {
                 $scenarioContents.append($toggleStepLink);
                 
                 // Create step container
-                $steps = $('<div class="steps"></div>');
+                var $steps = $('<div class="steps"></div>');
                 $scenarioContents.append($steps);
 
                 // Create capture container
-                $captures = $('<div class="captures"></div>');
+                var $captures = $('<div class="captures"></div>');
                 $scenarioContents.append($captures);
 
                 // Process all steps
                 for (var k = 0; k < self.features[i].scenarios[j].steps.length; k++) {
-                    $step = $('<div class="step">' + 
+                    var $step = $('<div class="step">' + 
                             '<h4>' + 
                                 '<span class="keyword">' + self.features[i].scenarios[j].steps[k].keyword + '</span>' +
                                 '<span class="name">' + self.features[i].scenarios[j].steps[k].name + '</span>' +
@@ -92,28 +91,69 @@ var report = {
                     $steps.append($step);
 
                     if (typeof(self.features[i].scenarios[j].steps[k].embeddings) != "undefined") {
+                        hasCaptures = true;
+
                         $step.addClass("embeddings");
                         for (var l = 0; l < self.features[i].scenarios[j].steps[k].embeddings.length; l++) {
-                            $step.append('<img src="data:' + self.features[i].scenarios[j].steps[k].embeddings[l].mime_type + ';base64,' + self.features[i].scenarios[j].steps[k].embeddings[l].data + '">');
-                        
-                            $capture = $('<div class="capture"><img src="data:' + self.features[i].scenarios[j].steps[k].embeddings[l].mime_type + ';base64,' + self.features[i].scenarios[j].steps[k].embeddings[l].data + '"></div>');
-                            $capture.colorbox({
-                                rel:'my-group', 
-                                inline: true,
-                                href: function(){ return this; }
+                            $stepEmbedding = $('<img class="step-embedding" src="data:' + self.features[i].scenarios[j].steps[k].embeddings[l].mime_type + ';base64,' + self.features[i].scenarios[j].steps[k].embeddings[l].data + '">');
+                            $stepEmbedding.click(function(event) {
+                                self.enlargeImage(event.currentTarget);
                             });
+                            $step.append($stepEmbedding);
+                            
+                            var $capture = $('<img class="capture" src="data:' + self.features[i].scenarios[j].steps[k].embeddings[l].mime_type + ';base64,' + self.features[i].scenarios[j].steps[k].embeddings[l].data + '">');
+                            $capture.click(function(event) {
+                                self.enlargeImage(event.currentTarget);
+                            })                            
                             $captures.append($capture);
                         }
                     } 
                 }
                 $steps.hide();
-            }            
+            }  
+
+            // Add animate captures button, if any
+            if (hasCaptures) {            
+                var $animateCapturesLink = $('<a class="animate-captures">Animate captures</a>');
+                $animateCapturesLink.data("scenarioId", self.features[i].id);
+                $animateCapturesLink.click(function(event) {
+                    self.animateCaptures(event.target);
+                });
+                $feature.append($animateCapturesLink);   
+            }       
         }
     },
 
     collapseScenarioSteps: function(elem) {
         $("#scenario-" + $(elem).data("scenarioId")).find(".steps").toggle();
-        $("#scenario-" + $(elem).data("scenarioId")).find(".embeddings").toggle();
+        $("#scenario-" + $(elem).data("scenarioId")).find(".captures").toggle();
+    },
+
+    enlargeImage: function(elem) {
+        var $captures = $(elem).closest(".feature").find($(elem).hasClass("capture") ? '.capture' : '.step-embedding');
+        $captures.colorbox.remove();
+        $captures.colorbox({
+            rel: 'gallery',
+            inline: true,
+            slideshow: true,
+            className: 'capture-gallery',
+            href: function(){ return this; }
+        });
+    },
+
+    animateCaptures: function(elem) {
+        var $captures = $(elem).closest(".feature").find(".capture");
+        $captures.colorbox.remove();
+        $captures.colorbox({
+            rel: 'gallery', 
+            className: 'capture-slideshow',
+            inline: true,
+            open: true,
+            slideshow: true,
+            slideshowSpeed: 500,
+            slideshowAuto: true,
+            href: function(){ return this; }
+        });
     },
 
     expandScenario: function(elem) {
@@ -121,80 +161,14 @@ var report = {
         $(elem).find("h3").toggle();
         $(elem).find(".scenario-contents").toggle();  
         $(elem).find(".heading").tooltip("option", "disabled", !$(elem).find(".heading").tooltip("option", "disabled"));
-    },
-
-    postProcessFeatures: function() {
-        var self = this;
-
-        var numberOfFeatures = $(".features").length;
-
-        $(".feature").each(function() {
-
-            var self = this;
-            var h3 = $(this).find("h3");
-            $(this).data("originalH3", h3.html());
-            $(this).data("scenarioFile", $(this).find(".scenario_file"));
-            $(this).find(".scenario_file").html("");
-            h3.html("");
-
-            var $toggleStepLink = $('<a class="toggleSteps">Toggle steps</a>');
-            $(self).find("ol").before($toggleStepLink);
-            $toggleStepLink.click(function() {
-            if ($(self).data("stepCollapsed") == true) {
-            $(self).data("stepCollapsed", false);
-            $(self).find("li").show();
-            } else {
-            $(self).data("stepCollapsed", true);
-            $(self).find("li").hide();
-            }          
-            });
-
-            h3.click(function() {
-            if ($(self).hasClass("closed")) {
-            $(self).find("a").hide();
-
-            $(self).data("stepCollapsed", true);
-
-            $(self).find("li").hide();
-            $(self).removeClass("closed");
-            $(self).addClass("open");
-            $(self).width("100%");
-            console.log($(self).data("originalH3"));
-            $(self).find("h3").html($(self).data("originalH3"));
-            $(self).find(".scenarioFile").html($(self).data("scenarioFile"));
-
-            $(self).find("img").each(function() {
-            var image = $(this);
-            $(this).show();
-            $(this).addClass("mini");
-            $(this).click(function() {
-            $(this).toggleClass("maxi");
-            });
-            });
-
-            } else {
-            $(self).removeClass("open");
-            $(self).addClass("closed");
-            $(self).width(100 / numberOfScenarios + "%");
-            $(self).find("h3").html("");
-            $(self).find(".scenarioFile").html("");
-            }
-            });
-
-            $(this).width(100 / numberOfScenarios + "%");
-            $(this).addClass("closed");
-            $(this).find("ol").each(function() {
-            $(this).hide();
-            });
-        });
-
     }
 };
 
 var Report = {
-    Feature: function(name, uri, scenarios) {
+    Feature: function(id, name, uri, scenarios) {
         var self = this;
 
+        this.id = id;
         this.name = name;
         this.uri = uri;
         this.scenarios = [];

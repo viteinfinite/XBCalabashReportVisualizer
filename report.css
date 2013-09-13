@@ -16,7 +16,7 @@ body {
     display: block;
     position: absolute;
     top: 0;
-    right: 10px;
+    right: 0;
 }
 
 .scenarios {
@@ -88,14 +88,34 @@ body {
     color: green;
 }
 
+.animate-captures {
+    display: block;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 0;
+    right: 120px;
+}
+
+.animate-captures:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: green;
+}
+
 /* Captures */
-.captures img {
+.captures img, .embeddings img  {
     width: 50px;
     display: inline-block;
     border: lightgrey 3px solid;
 }
 
-.captures img:hover {
+.embeddings img {
+    display: block;
+    clear: both;
+    margin-top: 22px;
+}
+
+.captures img:hover, .embeddings img:hover {
     border: white 3px solid;
     cursor: pointer
 }
@@ -110,4 +130,61 @@ body {
     top: -10%;
     left: -10%;
     z-index: 9;
+}
+
+.steps {
+    display: block;
+    box-shadow: #999 0px 0px 10px;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+.step {
+    height: auto;
+    overflow: hidden;
+    clear: both;
+    padding: 12px 10px 7px 10px;
+}
+
+.step:hover .location {
+    color: black;
+}
+
+.step:nth-child(odd) {
+    background-color: red;
+}
+
+.step:nth-child(even) {
+    background-color: blue;
+}
+
+.step h4 {
+    font-size: 1em;
+    float: left;
+    margin: -4px 0 0 0;
+    font-weight: normal;
+}
+
+.keyword {
+    font-weight: bold;
+}
+
+.step .location {
+    float: right;
+    display: block;
+    color: #999;
+    font-size: 10px;
+    text-align: right;
+}
+
+#colorbox.capture-slideshow #cboxPrevious, #colorbox.capture-slideshow #cboxNext, #colorbox.capture-slideshow #cboxSlideshow {
+    display: none !important;
+}
+
+.animate-captures {
+    display: block;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 20px;
+    right: 0px;
 }
