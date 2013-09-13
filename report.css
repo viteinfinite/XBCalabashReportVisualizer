@@ -1,5 +1,7 @@
 body {
     padding: 0 20px;
+    font-family: 'HelveticaNeue';
+    background-color: #f1f1f2;
 }
 
 @media all and (max-width: 767px) {
@@ -12,6 +14,19 @@ body {
     position: relative;
 }
 
+.feature .uri, .feature .animate-captures {
+    font-family: 'HelveticaNeue-Medium';
+    font-size: 12px;
+}
+
+.feature .animate-captures {
+    display: block;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 20px;
+    right: 0px;
+}
+
 .feature .uri {
     display: block;
     position: absolute;
@@ -22,9 +37,10 @@ body {
 .feature .duration {
     display: block;
     position: absolute;
-    top: 28px;
+    top: 30px;
     left: 0px;
     font-size: 10px;
+    font-family: 'HelveticaNeue-Bold';
 }
 
 .scenarios {
@@ -57,11 +73,11 @@ body {
 }
 
 .scenario.passed .heading {
-    background-color: green;
+    background-color: #4cd964;
 }
 
 .scenario.failed .heading {
-    background-color: red;
+    background-color: #ff3b30;
 }
 
 .scenario .heading:hover
@@ -201,10 +217,14 @@ body {
     display: none !important;
 }
 
-.animate-captures {
-    display: block;
-    margin-bottom: 10px;
-    position: absolute;
-    top: 20px;
-    right: 0px;
+h2 {
+    font-family: 'HelveticaNeue-UltraLight';
+    font-size: 30px;
+    font-weight: normal;
+}
+
+h3 {
+    font-family: 'HelveticaNeue-Light';
+    font-size: 20px;
+    font-weight: normal;
 }
