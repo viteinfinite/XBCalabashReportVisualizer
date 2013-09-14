@@ -33,9 +33,8 @@ var report = {
             var $feature = $('<div class="feature"><h2>' + self.features[i].name + '</h2><span class="uri">' + self.features[i].uri + '</span></div>');
             $target.append($feature);
 
-            // Add duration
-            var daysSinceLastWorkplaceAccident = countdown(0, self.features[i].getDuration() / 1000000, null, countdown.DEFAULTS);
-            $feature.append('<span class="duration">' + daysSinceLastWorkplaceAccident.toString() + '</span>'); 
+            // Add duration            
+            $feature.append('<span class="duration">' + Report.HumanizeDuration(self.features[i].getDuration()) + '</span>'); 
 
             var $scenarios = $('<div class="scenarios"></div>'); 
             $feature.append($scenarios);
@@ -67,7 +66,7 @@ var report = {
                 $h3.hide();
 
                 // Add toggle button
-                var $toggleStepLink = $('<a class="toggle-steps">Toggle steps</a>');
+                var $toggleStepLink = $('<a class="toggle-steps">Toggle steps (' + self.features[i].scenarios[j].steps.length + ')</a>');
                 $toggleStepLink.data("scenarioId", self.features[i].scenarios[j].id);
                 $toggleStepLink.click(function(event) {
                     self.collapseScenarioSteps(event.target);
@@ -87,7 +86,8 @@ var report = {
                     var $step = $('<div class="step">' + 
                             '<h4>' + 
                                 '<span class="keyword">' + self.features[i].scenarios[j].steps[k].keyword + '</span>' +
-                                '<span class="name">' + self.features[i].scenarios[j].steps[k].name + '</span>' +
+                                '<span class="name">' + self.features[i].scenarios[j].steps[k].name + '</span> ' +
+                                '<span class="duration">(' + Report.HumanizeDuration(self.features[i].scenarios[j].steps[k].result.duration) + ')</span>' +
                             '</h4>' + 
                             '<span class="location">' + self.features[i].scenarios[j].steps[k].match.location + '</span>' + 
                         '</div>');
@@ -174,6 +174,15 @@ var report = {
 };
 
 var Report = {
+
+    HumanizeDuration: function(duration) {
+        var duration = countdown(0, duration / 1000000, null, countdown.DEFAULTS);
+        if (duration == null || duration == 0) {
+            return '0 seconds';
+        }
+        return duration.toString();
+    },
+
     Feature: function(id, name, uri, scenarios) {
         var self = this;
 

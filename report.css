@@ -53,12 +53,13 @@ h2 {
     text-align: right;
 }
 
-.feature .duration {
+.feature > .duration {
     display: block;
     font-size: 10px;
     font-family: 'HelveticaNeue-Bold';
     float: left;
     clear: left;
+    margin-bottom: 3px;
 }
 
 .scenarios {
@@ -206,8 +207,17 @@ h2 {
     color: #444;
 }
 
+.step h4 .duration {
+    color: #ccc;
+    display: none;
+}
+
 .step:hover h4 {
     color: #000;
+}
+
+.step:hover h4 .duration {
+    display: inline;
 }
 
 .keyword {
