@@ -52,7 +52,7 @@ var report = {
                 $heading.click(function(event) {
                     self.expandScenario($(event.currentTarget).parent(".scenario"));
                 });
-                $heading.tooltip();
+                $heading.tooltip({position: {my: 'center', at: 'center center+45'}});
                 $scenario.append($heading);
 
                 // Create scenario contents
@@ -128,7 +128,7 @@ var report = {
                 $animateCapturesLink.click(function(event) {
                     self.animateCaptures(event.target);
                 });
-                $feature.append($animateCapturesLink);   
+                $scenarios.before($animateCapturesLink);   
             }       
         }
     },
