@@ -11,7 +11,7 @@ $(function() {
 var report = {
     
     features: [],
-    
+
     getFeatures: function(callback) {
         var self = this;
         $.getJSON('report.json', function(data) {
@@ -24,8 +24,54 @@ var report = {
         }); 
     },
 
+    isPassed: function() {
+        for (var i = 0; i < this.features.length; i++) {
+            if (this.features[i].isPassed() === false) {
+                return false;
+            }
+        }
+        return true;
+    },
+
+    getDuration: function() {
+        var duration = 0;
+        for (var i = 0; i < this.features.length; i++) {
+            duration += this.features[i].getDuration();
+        }
+        return duration;        
+    },
+
+    getPassedStepCount: function() {
+        var stepCount = 0;
+        for (var i = 0; i < this.features.length; i++) {
+            stepCount += this.features[i].getPassedStepCount();
+        }
+        return stepCount;
+    },
+
+    getFailedStepCount: function() {
+        var stepCount = 0;
+        for (var i = 0; i < this.features.length; i++) {
+            stepCount += this.features[i].getFailedStepCount();
+        }
+        return stepCount;
+    },
+
     drawFeaturesIn: function($target) {
         var self = this;
+
+        var $mainHeader = $('<div class="main-header ' + (self.isPassed() ? "passed" : "failed") + '"></div>');
+        $target.append($mainHeader);
+
+        // Add duration
+        $mainHeader.append('<h1 class="duration">' + Report.HumanizeDuration(self.getDuration()) + '</h1>');
+
+        // Add passed step count
+        $mainHeader.append('<span class="step-count step-count-passed">' + self.getPassedStepCount() + ' passed steps</span>');
+
+        // Add failed step count
+        $mainHeader.append('<span class="step-count step-count-failed">' + self.getFailedStepCount() + ' failed steps</span>');
+
         for (var i = 0; i < self.features.length; i++) {
 
             var hasCaptures = false;
@@ -85,6 +131,7 @@ var report = {
                 for (var k = 0; k < self.features[i].scenarios[j].steps.length; k++) {
                     var $step = $('<div class="step">' + 
                             '<h4>' + 
+                                '<span class="line">' + self.features[i].scenarios[j].steps[k].line + '</span> ' +
                                 '<span class="keyword">' + self.features[i].scenarios[j].steps[k].keyword + '</span>' +
                                 '<span class="name">' + self.features[i].scenarios[j].steps[k].name + '</span> ' +
                                 '<span class="duration">(' + Report.HumanizeDuration(self.features[i].scenarios[j].steps[k].result.duration) + ')</span>' +
@@ -190,14 +237,15 @@ var Report = {
         this.name = name;
         this.uri = uri;
         this.scenarios = [];
+
         for (var i = 0; i < scenarios.length; i++) {
             this.scenarios.push(new Report.Scenario(scenarios[i].name, scenarios[i].steps, scenarios[i].id));
         }
 
         this.isPassed = function() {
-            if (typeof(self._passed) == "undefined") {
+            if (typeof(self._passed) === "undefined") {
                 self._passed = true;
-                for (var i = 0; i < self.steps.length; i++) {
+                for (var i = 0; i < self.scenarios.length; i++) {
                     if (!self.scenarios[i].isPassed()) {
                         self._passed = false;
                         break;
@@ -205,17 +253,37 @@ var Report = {
                 }                
             }
             return self._passed;
-        }
+        };
 
         this.getDuration = function() {
-            if (typeof(self._duration) == "undefined") {
+            if (typeof(self._duration) === "undefined") {
                 self._duration = 0;
                 for (var i = 0; i < self.scenarios.length; i++) {
                     self._duration += self.scenarios[i].getDuration();
                 }
             }
             return self._duration;
-        }
+        };
+
+        this.getFailedStepCount = function() {
+            if (typeof(self._failedStepCount) === "undefined") {
+                self._failedStepCount = 0;
+                for (var i = 0; i < self.scenarios.length; i++) {
+                    self._failedStepCount += self.scenarios[i].getFailedStepCount();
+                }
+            }
+            return self._failedStepCount;
+        };
+
+        this.getPassedStepCount = function() {
+            if (typeof(self._passedStepCount) === "undefined") {
+                self._passedStepCount = 0;
+                for (var i = 0; i < self.scenarios.length; i++) {
+                    self._passedStepCount += self.scenarios[i].getPassedStepCount();
+                }
+            }
+            return self._passedStepCount;
+        };
     },
 
     Scenario: function(name, steps, id) {
@@ -226,7 +294,7 @@ var Report = {
         this.id = id.replace(";", "-");
 
         this.isPassed = function() {
-            if (typeof(self._passed) == "undefined") {
+            if (typeof(self._passed) === "undefined") {
                 self._passed = true;
                 for (var i = 0; i < self.steps.length; i++) {
                     if (self.steps[i].result.status != "passed") {
@@ -236,16 +304,39 @@ var Report = {
                 }                
             }
             return self._passed;
+        };
+
+        this._processSteps = function() {
+            self._passedStepCount = 0;
+            self._failedStepCount = 0;
+
+            for (var i = 0; i < self.steps.length; i++) {
+                if (self.steps[i].result.status === "passed") {
+                    self._passedStepCount++;
+                } else {
+                    self._failedStepCount++;
+                }
+            }
         }
 
         this.getDuration = function() {
-            if (typeof(self._duration) == "undefined") {
+            if (typeof(self._duration) === "undefined") {
                 self._duration = 0;
                 for (var i = 0; i < self.steps.length; i++) {
                     self._duration += self.steps[i].result.duration;
                 }
             }
             return self._duration;
-        }
+        };
+
+        this.getFailedStepCount = function() {
+            return self._failedStepCount;
+        };
+
+        this.getPassedStepCount = function() {
+            return self._passedStepCount;
+        };
+
+        this._processSteps();
     }
 }

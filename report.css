@@ -2,6 +2,7 @@ body {
     padding: 0 20px;
     font-family: 'HelveticaNeue';
     background-color: #f1f1f2;
+    padding: 50px 20px;
 }
 
 a {
@@ -15,9 +16,61 @@ a:hover {
 
 @media all and (max-width: 767px) {
     body {
-        padding: 0 5px;
+        padding: 50px 5px;
+    }
+
+    .main-header .duration {
+        left: 5px !important;
+    }
+
+    .main-header .step-count {
+        margin-right: 5px !important;
     }
 }
+
+/* Main Header */
+
+.main-header {
+    height: 50px;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+}
+
+.main-header .duration {
+    color: #fff;
+    font-family: 'HelveticaNeue-UltraLight';
+    font-size: 40px;
+    position: absolute;
+    bottom: 2px;
+    left: 20px;
+    margin: 0px;
+    padding: 0px;
+    font-weight: normal;
+}
+
+.main-header.passed {
+    background-color: #4cd964;
+}
+
+.main-header.failed {
+    background-color: #ff3b30; 
+}
+
+.main-header .step-count {
+    color: #fff;
+    font-family: 'HelveticaNeue-Light';
+    font-size: 16px;
+    float: right;
+    clear: both;
+    display: block;
+    margin-top: 4px;
+    margin-right: 20px;
+}
+
+/* Features */
 
 .feature {
     position: relative;
@@ -220,7 +273,14 @@ h2 {
     display: inline;
 }
 
-.keyword {
+.step .line {
+    font-family: 'Courier New';
+    min-width: 16px;
+    font-size: 10px;
+    display: inline-block;
+}
+
+.step .keyword {
     font-family: 'HelveticaNeue-Medium';
     color: #000;
 }
