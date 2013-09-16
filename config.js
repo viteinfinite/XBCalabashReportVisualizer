@@ -1,0 +1,3 @@
+Report.Config = {
+    REPORT_CAPTURE_ANIMATION_SPEED : 1000
+}

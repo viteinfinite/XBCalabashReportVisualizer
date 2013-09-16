@@ -206,7 +206,7 @@ var report = {
             inline: true,
             open: true,
             slideshow: true,
-            slideshowSpeed: 500,
+            slideshowSpeed: Report.Config.REPORT_CAPTURE_ANIMATION_SPEED,
             slideshowAuto: true,
             href: function(){ return this; }
         });
