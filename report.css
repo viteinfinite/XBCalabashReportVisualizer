@@ -191,6 +191,7 @@ h2 {
     display: inline-block;
     border: #ccc 2px solid;
     box-shadow: #ccc 1px 1px 0px;
+    margin-right: 12px;
 }
 
 .embeddings img {
